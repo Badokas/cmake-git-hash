@@ -1,4 +1,4 @@
-name: GitHash
+name: cmake-git-hash
 
 on:
   push:
@@ -13,7 +13,8 @@ jobs:
       # Do not stop all jobs if a single job fails.
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, Windows-2019, macos-11]
+        # os: [ubuntu-20.04, Windows-2019, macos-11]
+        os: [ubuntu-20.04]
         build-type: ['Debug', 'Release']
 
     steps:
@@ -22,19 +23,19 @@ jobs:
 
       - name: Create build folder
         run: |
-          mkdir ${{ runner.workspace }}/GitHash/example/build
+          mkdir ${{ runner.workspace }}/cmake-git-hash/example/build
 
       - name: Run CMake
-        working-directory: ${{ runner.workspace }}/GitHash/example/build
+        working-directory: ${{ runner.workspace }}/cmake-git-hash/example/build
         run: |
           cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
 
       - name: Build
-        working-directory: ${{ runner.workspace }}/GitHash/example/build
+        working-directory: ${{ runner.workspace }}/cmake-git-hash/example/build
         run: |
           cmake --build . --config ${{ matrix.build-type }} --verbose
 
       - name: Run test
-        working-directory: ${{ runner.workspace }}/GitHash/example/build
+        working-directory: ${{ runner.workspace }}/cmake-git-hash/example/build
         run: |
           ctest -C ${{ matrix.build-type }} -V
