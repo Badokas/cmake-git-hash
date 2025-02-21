@@ -30,8 +30,8 @@ function(genCppContents outputString)
     const char * const branch = \"${GIT_BRANCH}\";
     const char * const sha1 = \"${GIT_SHA1}\";
     const char * const shortSha1 = \"${GIT_SHORTSHA1}\";
-    const char * const tags = \"${CMD_GIT_TAGS}\";
-    const char * const config = \"$<CONFIG>\";
+    const char * const tags = \"${GIT_TAGS}\";
+    const char * const config = \"${CMAKE_BUILD_TYPE}\";
     const bool dirty = ${GIT_DIRTY};
 }"
         PARENT_SCOPE
