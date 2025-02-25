@@ -3,7 +3,7 @@ name: cmake-git-hash
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 jobs:
@@ -14,6 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         # os: [ubuntu-20.04, Windows-2019, macos-11]
+        # os: [macos-latest]
         os: [ubuntu-20.04]
         build-type: ['Debug', 'Release']
 
@@ -23,19 +24,19 @@ jobs:
 
       - name: Create build folder
         run: |
-          mkdir ${{ runner.workspace }}/cmake-git-hash/example/build
+          mkdir ${{ github.workspace }}/example/build
 
       - name: Run CMake
-        working-directory: ${{ runner.workspace }}/cmake-git-hash/example/build
+        working-directory: ${{ github.workspace }}/example/build
         run: |
           cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
 
       - name: Build
-        working-directory: ${{ runner.workspace }}/cmake-git-hash/example/build
+        working-directory: ${{ github.workspace }}/example/build
         run: |
           cmake --build . --config ${{ matrix.build-type }} --verbose
 
       - name: Run test
-        working-directory: ${{ runner.workspace }}/cmake-git-hash/example/build
+        working-directory: ${{ github.workspace }}/example/build
         run: |
           ctest -C ${{ matrix.build-type }} -V
