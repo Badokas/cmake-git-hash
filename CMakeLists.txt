@@ -19,6 +19,8 @@ set(CMD_GIT_DIRTY       ${GIT_EXECUTABLE} describe --always --dirty) # we post-p
 
 # Generator of the .cpp of the githash library
 function(genCppContents outputString)
+    string(TIMESTAMP BUILD_TIMESTAMP_UNIX "%s" UTC)
+    string(TIMESTAMP BUILD_TIMESTAMP_STR "%Y-%m-%d %H:%M" UTC)
     set(${outputString}
 "namespace GitHash {
     extern const char * const branch;
@@ -26,12 +28,16 @@ function(genCppContents outputString)
     extern const char * const shortSha1;
     extern const char * const tags;
     extern const char * const config;
+    extern const unsigned long long buildTimestamp;
+    extern const char * const buildTime;
     extern const bool dirty;
     const char * const branch = \"${GIT_BRANCH}\";
     const char * const sha1 = \"${GIT_SHA1}\";
     const char * const shortSha1 = \"${GIT_SHORTSHA1}\";
     const char * const tags = \"${GIT_TAGS}\";
     const char * const config = \"${CMAKE_BUILD_TYPE}\";
+    const unsigned long long buildTimestamp = ${BUILD_TIMESTAMP_UNIX}ULL;
+    const char * const buildTime = \"${BUILD_TIMESTAMP_STR}\";
     const bool dirty = ${GIT_DIRTY};
 }"
         PARENT_SCOPE
@@ -120,7 +126,8 @@ function(UpdateGitHash)
             COMMAND ${CMD_${c}}
             WORKING_DIRECTORY "${GitHash_SourceDir}"
             OUTPUT_VARIABLE ${c}
-            OUTPUT_STRIP_TRAILING_WHITESPACE)
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET)
     endforeach(c)
 
     # GIT_DIRTY post-processing
