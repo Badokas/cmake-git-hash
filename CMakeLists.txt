@@ -80,6 +80,7 @@ function(SetupGitHash)
         -DGitHash_CppFilename="${GitHash_CppFilename}"
         -DGitHash_CacheFilename="${GitHash_CacheFilename}"
         -DGitHash_SourceDir="${GitHash_SourceDir}"
+        -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
         -P ${_THIS_MODULE_FILE}
         BYPRODUCTS ${GitHash_CppFile}
     )
